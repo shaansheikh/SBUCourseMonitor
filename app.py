@@ -9,7 +9,10 @@ app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	print request
+    print json.loads(request.data)
+    fromid = json.loads(request.data)["messages"][0]["from"]
+    print fromid
+
 	a = requests.post(
 	    'https://api.kik.com/v1/message',
 	    auth=('shaanbot', 'a024ef5e-627c-4166-9fb1-2093cba4f544'),
@@ -20,7 +23,7 @@ def index():
 	        'messages': [
 	            {
 	                'body': 'I like ike', 
-	                'to': from, 
+	                'to': fromid, 
 	                'type': 'text'
 	            }
 	        ]
