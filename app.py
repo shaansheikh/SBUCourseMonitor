@@ -38,7 +38,7 @@ def index():
 
 def main():
 	app.debug = True
-	app.run(host='0.0.0.0', port=4000, ssl_context=("/etc/letsencrypt/live/shaansweb.com/cert.pem","/etc/letsencrypt/live/shaansweb.com/privkey.pem"))
+	app.run(host='0.0.0.0', port=4000, ssl_context=("/etc/letsencrypt/live/shaansweb.com/fullchain.pem","/etc/letsencrypt/live/shaansweb.com/privkey.pem"))
 	print session
 
 if __name__ == '__main__':

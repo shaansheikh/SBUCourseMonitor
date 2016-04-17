@@ -1,0 +1,25 @@
+{
+    "messages": [
+        {
+            "type": "text",
+            "to": "USERNAME",
+            "body": "How are you?",
+            "keyboards": [
+                {
+                    "to": "USERNAME",
+                    "type": "suggested",
+                    "responses": [
+                        {
+                            "type": "text",
+                            "body": "Good :)"
+                        },
+                        {
+                            "type": "text",
+                            "body": "Not so good :("
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
