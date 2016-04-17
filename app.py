@@ -5,7 +5,7 @@ from flask import Flask,render_template,request,send_from_directory,session,flas
 from OpenSSL import SSL
 from scrape import getinfo
 from dbaccess import AuthDatabase
-from interface import message,yesnomessage
+from interface import message,yesnomessage,messageFB
 
 app = Flask(__name__)
 db = AuthDatabase("sbucourse.db")
@@ -23,14 +23,17 @@ def index():
 			for incomingmsg in data["messages"][:1]:
 				username = incomingmsg["from"].encode('ascii', 'ignore')
 				payload = incomingmsg["body"].encode('ascii', 'ignore')
-		else:
+		elif "entry" in data:
 			medium = 1
-			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
-			payload = data["entry"][0]["messaging"][-1]["message"]["text"]
-			print username
-			print payload
-			messageFB(username,payload)
+			try:
+				username = data["entry"][0]["messaging"][-1]["sender"]["id"]
+				payload = data["entry"][0]["messaging"][-1]["message"]["text"]
+			except:
+				return "a"
+
 			return "a"
+		else:
+			return "hi"
 			
 		user = db.isUser(username)
 		if len(user) == 0:
