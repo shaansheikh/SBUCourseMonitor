@@ -46,14 +46,20 @@ def index():
 			db.addUser(username)
 			return "hi"
 		else:
-			print "alpha"
+			
 			state = user[0][3]
 			if state == 1:
-				print "beta"
+				
 				classinfo = getinfo(payload)
 				if classinfo == "ERROR":
 					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
 					return "hi"
+
+				elif classinfo == "FAIL":
+					message(medium,username,"Could not check class status :( Is Classfind down?")
+					db.reset(username)
+					return "hi"
+
 				else:
 					db.addTemp(username,payload)
 					message(medium,username,"Okay! I found the following class:")
@@ -68,14 +74,20 @@ def index():
 					db.changeState(username,1)
 					return "hi"
 				elif payload == "Yes":
-					message(medium,username,db.getTemp(username))
+					seats = scrape(db.getTemp(username))
+					if seats > 0:
+						message(medium,username,"Good news! Your class has " + seats + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
+						db.changeState(username,1)
+						return "hi"				
+					else:
+						message(medium,username,"You're all set! I'll monitor your course message you here if a seat in your class opens up.")
 				else:
 					message(medium,username,"Pick yes or no")
 					yesnomessage(medium,username,"Is this the right class?")
 					return "hi"
 
 
-	return "hi"
+	return "<!DOCTYPE HTML><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="1;url=http://shaansweb.com"><script type="text/javascript">window.location.href = "http://shaansweb.com"</script><title>Page Redirection</title></head>"
 
 
 

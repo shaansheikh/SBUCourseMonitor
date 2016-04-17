@@ -15,8 +15,11 @@ def scrape(id):
 def getinfo(id):
 	if not str.isdigit(id):
 		return "ERROR"
-	a=requests.get("http://classfind.stonybrook.edu/vufind/Search/Results?lookfor=" + id + "&type=AllFields&view=rss")
-	b=ET.fromstring(a.text).findall(".//channel//item//title")
+	try:
+		a=requests.get("http://classfind.stonybrook.edu/vufind/Search/Results?lookfor=" + id + "&type=AllFields&view=rss")
+		b=ET.fromstring(a.text).findall(".//channel//item//title")
+	except:
+		return "FAIL"
 	if (len(b)!=1):
 		return "ERROR"
 	course = b[0].text
