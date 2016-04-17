@@ -3,7 +3,7 @@ import requests
 import json
 from flask import Flask,render_template,request,send_from_directory,session,flash,redirect
 from OpenSSL import SSL
-import scrape
+from scrape import getinfo
 
 app = Flask(__name__)
 app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
@@ -14,7 +14,7 @@ def index():
 		data = json.loads(request.data)
 		print data
 		fromid = data["messages"][0]["from"]
-		print data["body"]
+		print data["messages"][0]["body"]
 
 		a = requests.post(
 			'https://api.kik.com/v1/message',
@@ -25,7 +25,7 @@ def index():
 			data=json.dumps({
 				'messages': [
 					{
-						'body': getinfo(data["body"]), 
+						'body':getinfo(data["messages"][0]["body"]), 
 						'to': fromid, 
 						'type': 'text'
 					}
