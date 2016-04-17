@@ -13,12 +13,24 @@ app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
 	if request.data:
 		print request.data
 		data = json.loads(request.data)
-		for incomingmsg in data["messages"][:1]:
-			username = incomingmsg["from"].encode('ascii', 'ignore')
-			payload = incomingmsg["body"].encode('ascii', 'ignore')
+		medium = -1
+		if "messages" in data:
+			medium = 0
+			for incomingmsg in data["messages"][:1]:
+				username = incomingmsg["from"].encode('ascii', 'ignore')
+				payload = incomingmsg["body"].encode('ascii', 'ignore')
+		else:
+			medium = 1
+			username = data["entry"]["messaging"]["sender"]["id"]
+			payload = data["entry"]["messaging"]["message"]["text"]
+			print username
+			print payload
+			messageFB(username,payload)
+			return "a"
 
 		user = db.isUser(username)
 		if len(user) == 0:
