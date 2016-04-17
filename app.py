@@ -53,7 +53,7 @@ def index():
 				classinfo = getinfo(payload)
 				if classinfo == "ERROR":
 					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
-					return "hi"
+					return "hi"
 				else:
 					db.addTemp(username,payload)
 					message(medium,username,"Okay! I found the following class:")
