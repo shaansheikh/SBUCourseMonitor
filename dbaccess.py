@@ -22,3 +22,12 @@ class AuthDatabase(Database):
 
 	def getJobs():
 		return self._execute('SELECT * FROM Courses')
+
+	def addTemp(self,username,id):
+		self._execute('UPDATE Users SET temp=? where identifier=?',(id,username))
+
+	def getTemp(self,username):
+		self._execute('SELECT temp FROM Users where identifier=?',(username,))
+
+	def reset(self,username):
+		self._execute('DELETE FROM Users where identifier=?',(username,))

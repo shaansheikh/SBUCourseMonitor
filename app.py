@@ -33,8 +33,12 @@ def index():
 
 		else:
 			return "hi"
-		
-		print "moto"
+
+		if payload =="reset":
+			db.reset(username)
+			message(medium,username,"RESET! You have been removed from database.")
+			return "hi"
+			
 		user = db.isUser(username)
 		print user
 		if len(user) == 0:
@@ -51,6 +55,7 @@ def index():
 					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
 					return "hi"
 				else:
+					db.addTemp(username,payload)
 					message(medium,username,"Okay! I found the following class:")
 					message(medium,username, classinfo)
 					yesnomessage(medium,username,"Is this the right class?")
@@ -63,7 +68,7 @@ def index():
 					db.changeState(username,1)
 					return "hi"
 				elif payload == "Yes":
-					message(medium,username,"I didn't think this through")
+					message(medium,username,db.getTemp(username))
 				else:
 					message(medium,username,"Pick yes or no")
 					yesnomessage(medium,username,"Is this the right class?")
