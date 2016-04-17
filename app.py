@@ -26,8 +26,8 @@ def index():
 		elif "entry" in data:
 			medium = 1
 			try:
-				username = data["entry"][0]["messaging"][-1]["sender"]["id"]
-				payload = data["entry"][0]["messaging"][-1]["message"]["text"]
+				username = data["entry"][0]["messaging"][-1]["sender"]["id"].encode('ascii', 'ignore')
+				payload = data["entry"][0]["messaging"][-1]["message"]["text"].encode('ascii', 'ignore')
 			except:
 				return "a"
 		else:
