@@ -12,6 +12,7 @@ app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 def index():
 	if request.data:
 		data = json.loads(request.data)
+		print data
 		fromid = data["messages"][0]["from"]
 		print data["body"]
 
