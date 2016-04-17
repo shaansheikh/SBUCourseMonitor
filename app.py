@@ -11,9 +11,9 @@ app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	if request.data:
-		print json.loads(request.data)
-		fromid = json.loads(request.data)["messages"][0]["from"]
-		print fromid
+		data = json.loads(request.data)
+		fromid = data["messages"][0]["from"]
+		print data["body"]
 
 		a = requests.post(
 			'https://api.kik.com/v1/message',
@@ -24,7 +24,7 @@ def index():
 			data=json.dumps({
 				'messages': [
 					{
-						'body': 'I like ike', 
+						'body': getinfo(data["body"]), 
 						'to': fromid, 
 						'type': 'text'
 					}
