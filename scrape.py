@@ -13,7 +13,7 @@ def scrape(id):
 	return int(a[a.index("<SU_ENRL_AVAL>")+14:a.index("</SU_ENRL_AVAL>")])
 
 def getinfo(id):
-	if not isdigit(id):
+	if not str.isdigit(id):
 		return "ERROR"
 	a=requests.get("http://classfind.stonybrook.edu/vufind/Search/Results?lookfor=" + id + "&type=AllFields&view=rss")
 	b=ET.fromstring(a.text).findall(".//channel//item//title")
