@@ -25,22 +25,27 @@ def index():
 				payload = incomingmsg["body"].encode('ascii', 'ignore')
 		elif "entry" in data:
 			medium = 1
-			try:
-				username = data["entry"][0]["messaging"][-1]["sender"]["id"].encode('ascii', 'ignore')
+			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
+			if "message" in data["entry"][0]["messaging"][-1]:
 				payload = data["entry"][0]["messaging"][-1]["message"]["text"].encode('ascii', 'ignore')
-			except:
-				return "a"
+			else:
+				payload = data["entry"][0]["messaging"][-1]["postback"]["payload"]
+
 		else:
 			return "hi"
-			
+		
+		print "moto"
 		user = db.isUser(username)
+		print user
 		if len(user) == 0:
 			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up! Why don't you start by telling me the five digit id of the section you want.")
 			db.addUser(username)
 			return "hi"
 		else:
+			print "alpha"
 			state = user[0][3]
 			if state == 1:
+				print "beta"
 				classinfo = getinfo(payload)
 				if classinfo == "ERROR":
 					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
