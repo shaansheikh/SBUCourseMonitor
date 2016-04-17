@@ -67,11 +67,11 @@ def yesnomessageKik(username,message):
 
 def messageFB(userid,message):
 	headers = {'Content-Type': 'application/json',}
-	data = '{"recipient":{"id":'+userid+'},"message":{"text":"'+message+'"}}'
+	data = '{"recipient":{"id":'+str(userid)+'},"message":{"text":"'+message+'"}}'
 	requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=EAAWFfyr0QmMBAIlTe6EOCtZBzCH3aT2HVZCFLSn8V77bjBVnXCet9IztJ7Kzh6QuD5wa4qj4ZB4ZAdRZBOqlqZC1K0tL4DhYl3UKGoWSw3xII1ID6qbYAp2omEaPNYHrW3erGQUDuarKu11KYM7B9Iraot08bXDI56ivrlxQULzgZDZD', headers=headers, data=data)
 
 def yesnomessageFB(userid,message):
 	headers = { 'Content-Type': 'application/json',}
 
-	data = '{ "recipient":{ "id":'+userid+'},"message":{ "attachment":{ "type":"template","payload":{ "template_type":"button","text":"What do you want to do next?","buttons":[ { "type":"postback","title":"Yes","payload":"Yes" },{ "type":"postback","title":"Nope","payload":"Nope"}]}}}}'
+	data = '{ "recipient":{ "id":'+str(userid)+'},"message":{ "attachment":{ "type":"template","payload":{ "template_type":"button","text":"What do you want to do next?","buttons":[ { "type":"postback","title":"Yes","payload":"Yes" },{ "type":"postback","title":"Nope","payload":"Nope"}]}}}}'
 	requests.post('https://graph.facebook.com/me/messages?access_token=EAAWFfyr0QmMBAIlTe6EOCtZBzCH3aT2HVZCFLSn8V77bjBVnXCet9IztJ7Kzh6QuD5wa4qj4ZB4ZAdRZBOqlqZC1K0tL4DhYl3UKGoWSw3xII1ID6qbYAp2omEaPNYHrW3erGQUDuarKu11KYM7B9Iraot08bXDI56ivrlxQULzgZDZD',headers=headers,data=data)
