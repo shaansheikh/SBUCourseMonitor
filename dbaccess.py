@@ -10,7 +10,7 @@ class AuthDatabase(Database):
 		return self._execute("SELECT * FROM Users WHERE identifier=?;",(username,))
 
 	def addUser(self, username):
-		if len(isUser) ==0:
+		if len(self.isUser(username)) ==0:
 			self._execute('INSERT INTO Users(medium,identifier,state) values(0,?,1);',(username,))
 
 	def changeState(self, username,state):
