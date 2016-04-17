@@ -16,9 +16,9 @@ def index():
 	if request.data:
 		data = json.loads(request.data)
 		username = data["messages"][0]["from"].encode('ascii', 'ignore')
-		message = data["messages"][0]["body"].encode('ascii', 'ignore')
+		payload = data["messages"][0]["body"].encode('ascii', 'ignore')
 
-		message(username,message)
+		message(username,payload)
 
 
 	return "hi"
