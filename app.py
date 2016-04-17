@@ -14,6 +14,7 @@ app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	if request.data:
+        print request.data
 		data = json.loads(request.data)
 		for incomingmsg in data["messages"]:
 		    username = incomingmsg["from"].encode('ascii', 'ignore')
