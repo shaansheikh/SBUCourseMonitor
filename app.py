@@ -5,7 +5,7 @@ from flask import Flask,render_template,request,send_from_directory,session,flas
 from OpenSSL import SSL
 from scrape import getinfo
 from dbaccess import AuthDatabase
-from interface import message
+from interface import message,yesnomessage
 
 app = Flask(__name__)
 db = AuthDatabase("sbucourse.db")
@@ -25,13 +25,13 @@ def index():
 				payload = incomingmsg["body"].encode('ascii', 'ignore')
 		else:
 			medium = 1
-			username = data["entry"]["messaging"]["sender"]["id"]
-			payload = data["entry"]["messaging"]["message"]["text"]
+			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
+			payload = data["entry"][0]["messaging"][-1]["message"]["text"]
 			print username
 			print payload
 			messageFB(username,payload)
 			return "a"
-
+			
 		user = db.isUser(username)
 		if len(user) == 0:
 			message(username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up! Why don't you start by telling me the five digit id of the section you want.")
@@ -52,7 +52,7 @@ def index():
 					return "hi"
 		  
 			elif state == 2:
-				if payload == "No":
+				if payload == "Nope":
 					message(username,"Oops! Why don't you tell me the 5 digit ID of the class you're actually looking for. You can find the course code of your section on SOLAR.")
 					db.changeState(username,1)
 					return "hi"
