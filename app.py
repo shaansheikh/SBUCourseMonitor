@@ -25,7 +25,7 @@ def index():
 			data=json.dumps({
 				'messages': [
 					{
-						'body':getinfo(data["messages"][0]["body"]), 
+						'body':getinfo(data["messages"][0]["body"].encode('ascii','ignore')), 
 						'to': fromid, 
 						'type': 'text'
 					}
