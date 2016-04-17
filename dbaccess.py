@@ -27,7 +27,7 @@ class AuthDatabase(Database):
 		self._execute('UPDATE Users SET temp=? where identifier=?',(id,username))
 
 	def getTemp(self,username):
-		self._execute('SELECT temp FROM Users where identifier=?',(username,))
+		return self._execute('SELECT temp FROM Users where identifier=?',(username,))
 
 	def reset(self,username):
 		self._execute('DELETE FROM Users where identifier=?',(username,))
