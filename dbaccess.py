@@ -20,10 +20,10 @@ class AuthDatabase(Database):
 		userid = self.usernameToID(username)
 		self._execute('INSERT INTO Courses(userID,coursenum) values(?,?)',(userid,coursenum))
 
-	def getJobs():
+	def getJobs(self):
 		return self._execute('SELECT * FROM Courses')
 
-	def getFollowingCourses(username):
+	def getFollowingCourses(self,username):
 		userID = self.usernameToID(username)
 		return self._execute('SELECT coursenum FROM Courses where userID=?',(userID,))
 
