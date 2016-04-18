@@ -108,7 +108,9 @@ About - Information
 					db.changeState(username,1)
 					return "hi"
 				elif payload.lower().replace(" ","") == "statusupdate":
-					message(medium,username,statusUpdate(username,db))
+					updates = statusUpdate(username,db)
+					for update in updates:
+						message(medium,username,update)
 					return "hi"
 				elif payload.lower().replace(" ","")=="about":
 					message(medium,username,"I was created by Shaan Sheikh at a hackathon!")

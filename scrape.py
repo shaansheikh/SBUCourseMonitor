@@ -29,4 +29,4 @@ def getinfo(id):
 	return code + ": " + course + " taught by " + prof
 
 def statusUpdate(username,database):
-	return str(database.getFollowingCourses(username))
+	return [getinfo(x[0]) + " - " + str(scrape(x[0])) + " seats open" for x in database.getFollowingCourses(username)]
