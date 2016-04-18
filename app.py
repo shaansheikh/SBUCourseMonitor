@@ -3,7 +3,7 @@ import requests
 import json
 from flask import Flask,render_template,request,send_from_directory,session,flash,redirect
 from OpenSSL import SSL
-from scrape import getinfo
+from scrape import getinfo,scrape
 from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 
@@ -26,13 +26,16 @@ def index():
 		elif "entry" in data:
 			medium = 1
 			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
-			if "message" in data["entry"][0]["messaging"][-1]:
+			if "message" in data["entry"][0]["messaging"][-1] and "text" in data["entry"][0]["messaging"][-1]["message"]:
 				payload = data["entry"][0]["messaging"][-1]["message"]["text"].encode('ascii', 'ignore')
-			else:
+			elif "postback" in data["entry"][0]["messaging"][-1]:
 				payload = data["entry"][0]["messaging"][-1]["postback"]["payload"]
+			else:
+				message(1,username,"(y)")
+				return "not message or postback"
 
 		else:
-			return "hi"
+			return "invalid request"
 
 		if payload.lower().replace(" ","") =="removeme":
 			db.reset(username)
@@ -42,7 +45,8 @@ def index():
 		user = db.isUser(username)
 		print user
 		if len(user) == 0:
-			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up! Why don't you start by telling me the five digit id of the section you want.")
+			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up!")
+			message(medium,username,"Why don't you start by telling me the five digit id of the section you want.")
 			db.addUser(username)
 			return "hi"
 		else:
@@ -76,7 +80,7 @@ def index():
 				elif payload == "Yes":
 					seats = scrape(db.getTemp(username))
 					if seats > 0:
-						message(medium,username,"Good news! Your class has " + seats + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
+						message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
 						db.changeState(username,1)
 						return "hi"				
 					else:
@@ -87,7 +91,7 @@ def index():
 					return "hi"
 
 
-	return "<!DOCTYPE HTML><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="1;url=http://shaansweb.com"><script type="text/javascript">window.location.href = "http://shaansweb.com"</script><title>Page Redirection</title></head>"
+	return '<!DOCTYPE HTML><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="1;url=http://shaansweb.com"><script type="text/javascript">window.location.href = "http://shaansweb.com"</script><title>Page Redirection</title></head>'
 
 
 
