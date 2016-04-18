@@ -75,10 +75,13 @@ def index():
 					seats = scrape(db.getTemp(username))
 					if seats > 0:
 						message(medium,username,"Good news! Your class has " + seats + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
-						db.changeState(username,1)
+						96551db.changeState(username,1)
 						return "hi"				
 					else:
-						message(medium,username,"You're all set! I'll monitor your course message you here if a seat in your class opens up.")
+						message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
+						message(medium,username,db.getTemp(username))
+						db.reset(username)
+						return "hi"
 				else:
 					message(medium,username,"Pick yes or no")
 					yesnomessage(medium,username,"Is this the right class?")
