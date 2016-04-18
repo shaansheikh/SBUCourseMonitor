@@ -3,7 +3,7 @@ import requests
 import json
 from flask import Flask,render_template,request,send_from_directory,session,flash,redirect
 from OpenSSL import SSL
-from scrape import getinfo,scrape
+from scrape import getinfo,scrape,statusUpdate
 from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 
@@ -108,7 +108,7 @@ About - Information
 					db.changeState(username,1)
 					return "hi"
 				elif payload.lower().replace(" ","") == "statusupdate":
-					message(medium,username,statusupdate(username,db))
+					message(medium,username,statusUpdate(username,db))
 					return "hi"
 				elif payload.lower().replace(" ","")=="about":
 					message(medium,username,"I was created by Shaan Sheikh at a hackathon!")
