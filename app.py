@@ -87,7 +87,7 @@ def index():
 					else:
 						message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
 						db.addJob(username,db.getTemp(username))
-						message(medium,username,"Anything else I can help you with? You can say "commands" for a list of commands")
+						message(medium,username,'Anything else I can help you with? You can say "commands" for a list of commands I understand.')
 						db.changeState(username,0)
 						return "hi"
 				else:
