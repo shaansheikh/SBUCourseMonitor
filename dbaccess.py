@@ -23,6 +23,10 @@ class AuthDatabase(Database):
 	def getJobs():
 		return self._execute('SELECT * FROM Courses')
 
+	def getFollowingCourses(username):
+		userID = self.usernameToID(username)
+		return self._execute('SELECT coursenum FROM Courses where userID=?',(userID,))
+
 	def addTemp(self,username,id):
 		self._execute('UPDATE Users SET temp=? where identifier=?',(id,username))
 
@@ -30,4 +34,5 @@ class AuthDatabase(Database):
 		return self._execute('SELECT temp FROM Users where identifier=?',(username,))[0][0]
 
 	def reset(self,username):
+		self._execute('DELETE FROM Jobs WHERE userID=?',(self.usernameToID(username),))
 		self._execute('DELETE FROM Users where identifier=?',(username,))

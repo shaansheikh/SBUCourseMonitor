@@ -3,7 +3,7 @@ import requests
 import json
 from flask import Flask,render_template,request,send_from_directory,session,flash,redirect
 from OpenSSL import SSL
-from scrape import getinfo
+from scrape import getinfo,scrape
 from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 
@@ -26,13 +26,16 @@ def index():
 		elif "entry" in data:
 			medium = 1
 			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
-			if "message" in data["entry"][0]["messaging"][-1]:
+			if "message" in data["entry"][0]["messaging"][-1] and "text" in data["entry"][0]["messaging"][-1]["message"]:
 				payload = data["entry"][0]["messaging"][-1]["message"]["text"].encode('ascii', 'ignore')
-			else:
+			elif "postback" in data["entry"][0]["messaging"][-1]:
 				payload = data["entry"][0]["messaging"][-1]["postback"]["payload"]
+			else:
+				message(1,username,"(y)")
+				return "not message or postback"
 
 		else:
-			return "hi"
+			return "invalid request"
 
 		if payload.lower().replace(" ","") =="removeme":
 			db.reset(username)
@@ -42,7 +45,8 @@ def index():
 		user = db.isUser(username)
 		print user
 		if len(user) == 0:
-			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up! Why don't you start by telling me the five digit id of the section you want.")
+			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up!")
+			message(medium,username,"Why don't you start by telling me the five digit id of the section you want.")
 			db.addUser(username)
 			return "hi"
 		else:
@@ -54,10 +58,12 @@ def index():
 				if classinfo == "ERROR":
 					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
 					return "hi"
+
 				elif classinfo == "FAIL":
 					message(medium,username,"Could not check class status :( Is Classfind down?")
 					db.reset(username)
 					return "hi"
+
 				else:
 					db.addTemp(username,payload)
 					message(medium,username,"Okay! I found the following class:")
@@ -74,21 +80,48 @@ def index():
 				elif payload == "Yes":
 					seats = scrape(db.getTemp(username))
 					if seats > 0:
-						message(medium,username,"Good news! Your class has " + seats + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
-						96551db.changeState(username,1)
+						message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
+						db.changeState(username,1)
+
 						return "hi"				
 					else:
 						message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
-						message(medium,username,db.getTemp(username))
-						db.reset(username)
+						db.addJob(username,db.getTemp(username))
+						message(medium,username,"Anything else I can help you with? You can say "commands" for a list of commands")
+						db.changeState(username,0)
 						return "hi"
 				else:
 					message(medium,username,"Pick yes or no")
 					yesnomessage(medium,username,"Is this the right class?")
 					return "hi"
+			elif state == 0:
+				if payload.lower().replace(" ","") == "commands":
+					message(medium,username,"""Remove me - Delete all records of you from the database.
+Add class - add another section to follow.
+Status update - See which courses we're currently monitoring for open seats for you.
+Commands - show this menu.
+About - Information
+					""")
+					return "hi"
+				elif payload.lower().replace(" ","") == "addclass":
+					message(medium,username,"Tell me the five digit code of the class")
+					db.changeState(username,1)
+					return "hi"
+				elif payload.lower().replace(" ","") == "statusupdate":
+					message(medium,username,statusupdate(username,db))
+					return "hi"
+				elif payload.lower().replace(" ","")=="about":
+					message(medium,username,"I was created by Shaan Sheikh at a hackathon!")
+					message(medium,username,"Email shaan.sheikh@stonybrook.edu if you have any questions or want to report any problems.")
+					return "hi"
+				else:
+					message(medium,username,"Sorry, I don't understand what you said. Humans are hard to understand. I'm still getting the hang of it")
+					return "hi"
+			else:
+				message(medium,username,"You seem to be in an invalid state. Email shaan.sheikh@stonybrook.edu")
 
 
-	return "<!DOCTYPE HTML><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="1;url=http://shaansweb.com"><script type="text/javascript">window.location.href = "http://shaansweb.com"</script><title>Page Redirection</title></head>"
+	return '<!DOCTYPE HTML><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="refresh" content="1;url=http://shaansweb.com"><script type="text/javascript">window.location.href = "http://shaansweb.com"</script><title>Page Redirection</title></head>'
 
 
 

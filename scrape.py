@@ -27,3 +27,6 @@ def getinfo(id):
 	a = requests.get("http://classfind.stonybrook.edu/vufind/Search/Results?lookfor=" + id)
 	code=html.fromstring(a.text).xpath('//div[@class="span-2"]//a//b')[0].text
 	return code + ": " + course + " taught by " + prof
+
+def statusUpdate(username,database):
+	return str(database.getFollowingCourses(username))
