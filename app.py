@@ -53,6 +53,10 @@ def index():
 			
 			state = user[0][3]
 			if state == 1:
+				if payload.lower().replace(" ","") == "cancel":
+					message(medium,username,"ok")
+					db.changeState(username,0)
+					return "Hello"
 				
 				classinfo = getinfo(payload)
 				if classinfo == "ERROR":
