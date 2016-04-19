@@ -4,7 +4,10 @@ __all__ = ['AuthDatabase']
 
 class AuthDatabase(Database):
 	def usernameToID(self,username):
-		return self._execute("SELECT userID from Users WHERE identifier=?;",(username,))[0][0]
+		a = self._execute("SELECT userID from Users WHERE identifier=?;",(username,))
+		if len(a) > 0:
+			return a[0][0]
+		return -1
 
 	def isUser(self, username):
 		return self._execute("SELECT * FROM Users WHERE identifier=?;",(username,))
