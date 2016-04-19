@@ -3,9 +3,9 @@ import json
 
 def message(medium,username,message):
 	if medium == 0:
-		messageKik(username,message)
+		return messageKik(username,message)
 	else:
-		messageFB(username,message)
+		return messageFB(username,message)
 
 def yesnomessage(medium,username,message):
 	if medium == 0:
@@ -68,7 +68,7 @@ def yesnomessageKik(username,message):
 def messageFB(userid,message):
 	headers = {'Content-Type': 'application/json',}
 	data = '{"recipient":{"id":'+str(userid)+'},"message":{"text":"'+message+'"}}'
-	requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=EAAWFfyr0QmMBAIlTe6EOCtZBzCH3aT2HVZCFLSn8V77bjBVnXCet9IztJ7Kzh6QuD5wa4qj4ZB4ZAdRZBOqlqZC1K0tL4DhYl3UKGoWSw3xII1ID6qbYAp2omEaPNYHrW3erGQUDuarKu11KYM7B9Iraot08bXDI56ivrlxQULzgZDZD', headers=headers, data=data)
+	return requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=EAAWFfyr0QmMBAIlTe6EOCtZBzCH3aT2HVZCFLSn8V77bjBVnXCet9IztJ7Kzh6QuD5wa4qj4ZB4ZAdRZBOqlqZC1K0tL4DhYl3UKGoWSw3xII1ID6qbYAp2omEaPNYHrW3erGQUDuarKu11KYM7B9Iraot08bXDI56ivrlxQULzgZDZD', headers=headers, data=data)
 
 def yesnomessageFB(userid,message):
 	headers = { 'Content-Type': 'application/json',}

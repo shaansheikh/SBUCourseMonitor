@@ -96,12 +96,18 @@ def index():
 					return "hi"
 			elif state == 0:
 				if payload.lower().replace(" ","") == "commands":
-					message(medium,username,"""Remove me - Delete all records of you from the database.
+					if medium == 0:
+						message(medium,username,"""Remove me - Delete all records of you from the database.
 Add class - add another section to follow.
 Status update - See which courses we're currently monitoring for open seats for you.
 Commands - show this menu.
-About - Information
-					""")
+About - Information""")
+					else:
+						message(medium,username,"Remove me - Delete all records of you from the database.")
+						message(medium,username,"Add class - add another section to follow.")
+						message(medium,username,"Status update - See which courses we're currently monitoring for open seats for you.")
+						message(medium,username,"Commands - show this menu.")						
+						message(medium,username,"About - Information")
 					return "hi"
 				elif payload.lower().replace(" ","") == "addclass":
 					message(medium,username,"Tell me the five digit code of the class")
