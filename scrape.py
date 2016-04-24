@@ -7,7 +7,7 @@ def scrape(id):
 	try:
 		r = requests.get("http://classfind.stonybrook.edu/vufind/AJAX/JSON?method=getItemVUStatuses&itemid=" + str(id) + "&strm=1168")
 	except:
-		return -1
+		return -1000
 	
 	a=json.loads(r.text)["data"]
 	return int(a[a.index("<SU_ENRL_AVAL>")+14:a.index("</SU_ENRL_AVAL>")])

@@ -8,6 +8,10 @@ from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 import threading
 
+app = Flask(__name__)
+db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
+app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
+
 def lookup(medium,username,payload):
 	classinfo = getinfo(payload)
 	if classinfo == "ERROR":
@@ -24,9 +28,20 @@ def lookup(medium,username,payload):
 		yesnomessage(medium,username,"Is this the right class?")
 		db.changeState(username,2)
 
-app = Flask(__name__)
-db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
-app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
+def seatcheck(medium,username):
+	seats = scrape(db.getTemp(username))
+	if seats > 0:
+		message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
+		db.changeState(username,1)
+
+	elif seats > -1000:
+		message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
+		message(medium,username,"Anything else I can help you with? You can say 'commands' for a list of commands I understand.")
+		db.addJob(username,db.getTemp(username))
+		db.changeState(username,0)
+	else:
+		message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -88,21 +103,10 @@ def index():
 					db.changeState(username,1)
 					return "hi"
 				elif payload == "Yes":
-					seats = scrape(db.getTemp(username))
-					if seats > 0:
-						message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
-						db.changeState(username,1)
+					thread = threading.Thread(target=seatcheck,args=(medium,username))
 
-						return "hi"				
-					elif seats == 0:
-						message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
-						message(medium,username,"Anything else I can help you with? You can say 'commands' for a list of commands I understand.")
-						db.addJob(username,db.getTemp(username))
-						db.changeState(username,0)
-						return "hi"
-					else:
-						message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
-						return "hi"
+					thread.start()
+					return "hi"
 				else:
 					message(medium,username,"Pick yes or no")
 					yesnomessage(medium,username,"Is this the right class?")
