@@ -36,6 +36,9 @@ class AuthDatabase(Database):
 	def getTemp(self,username):
 		return self._execute('SELECT temp FROM Users where identifier=?',(username,))[0][0]
 
+	def getUserByID(self,userid):
+		return self._execute('SELECT * FROM Users where userID=?',(userID,))
+
 	def reset(self,username):
 		self._execute('DELETE FROM Courses WHERE userID=?',(self.usernameToID(username),))
 		self._execute('DELETE FROM Users where identifier=?',(username,))
