@@ -119,13 +119,13 @@ def index():
 					if medium == 0:
 						message(medium,username,"""Remove me - Delete all records of you from the database.
 Add class - add another section to follow.
-Status update - See which courses we're currently monitoring for open seats for you.
+Status update - See which courses I'm currently monitoring for open seats for you.
 Commands - show this menu.
 About - Information""")
 					else:
 						message(medium,username,"Remove me - Delete all records of you from the database.")
 						message(medium,username,"Add class - add another section to follow.")
-						message(medium,username,"Status update - See which courses we're currently monitoring for open seats for you.")
+						message(medium,username,"Status update - See which courses I'm currently monitoring for open seats for you.")
 						message(medium,username,"Commands - show this menu.")						
 						message(medium,username,"About - Information")
 					return "hi"
@@ -139,10 +139,24 @@ About - Information""")
 					return "hi"
 				elif payload.lower().replace(" ","")=="about":
 					message(medium,username,"I was created by Shaan Sheikh at a hackathon!")
-					message(medium,username,"Email shaan.sheikh@stonybrook.edu if you have any questions or want to report any problems.")
+					message(medium,username,"If you have any questions or want to report any problems, use the feedback command or email shaan.sheikh@stonybrook.edu")
+					return "hi"
+				elif payload.lower().replace(" ","")=="feedback":
+					message(medium,username,"Your next message to me will be recorded as feedback. Use this to report any issues")
+					message(medium,username,"If you don't want to submit any feedback, just say cancel")
+					db.changeState(username,3)
 					return "hi"
 				else:
 					message(medium,username,"Sorry, I don't understand what you said. Humans are hard to understand. I'm still getting the hang of it")
+					message(medium,username,'Say "commands for a list of things I can understand"')
+					return "hi"
+			elif state==3:
+				if payload.lower.replace(" ","")=="cancel":
+					message(medium,username,"ok, canceled")
+				else:
+					message(1,"shaansweb",username + ": " + payload)
+					message(medium,username,"Thanks, you feedback was recorded. We'll message you here if we have any questions")
+					db.changeState(username,0)
 					return "hi"
 			else:
 				message(medium,username,"You seem to be in an invalid state. Email shaan.sheikh@stonybrook.edu")
