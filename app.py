@@ -118,10 +118,12 @@ def index():
 				if payload.lower().replace(" ","") == "commands":
 					if medium == 0:
 						message(medium,username,"""Remove me - Delete all records of you from the database.
-Add class - add another section to follow.
+Add class - Add another section to follow.
 Status update - See which courses I'm currently monitoring for open seats for you.
-Commands - show this menu.
-About - Information""")
+Commands - Show this menu.
+About - Information
+Feedback - Submit feedback or report a problem
+""")
 					else:
 						message(medium,username,"Remove me - Delete all records of you from the database.")
 						message(medium,username,"Add class - add another section to follow.")
@@ -151,10 +153,12 @@ About - Information""")
 					message(medium,username,'Say "commands for a list of things I can understand"')
 					return "hi"
 			elif state==3:
-				if payload.lower.replace(" ","")=="cancel":
+				if payload.lower().replace(" ","")=="cancel":
 					message(medium,username,"ok, canceled")
+					db.changeState(username,0)
+					return "hi"
 				else:
-					message(1,"shaansweb",username + ": " + payload)
+					message(0,"shaansweb",str(username) + ": " + payload)
 					message(medium,username,"Thanks, you feedback was recorded. We'll message you here if we have any questions")
 					db.changeState(username,0)
 					return "hi"
