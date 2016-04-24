@@ -59,7 +59,7 @@ def index():
 					db.changeState(username,0)
 					return "Hello"
 				
-				thread = threading.Thread(target=int_sleep,args=(payload,))
+				thread = threading.Thread(target=lookup,args=(payload,))
 				thread.start()
 				return "hi"
 
