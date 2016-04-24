@@ -6,6 +6,7 @@ from OpenSSL import SSL
 from scrape import getinfo,scrape,statusUpdate
 from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
+import threading
 
 app = Flask(__name__)
 db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
