@@ -24,7 +24,7 @@ def lookup(medium,username,payload):
 
 	else:
 		db.addTemp(username,payload)
-		message(medium,username,"Okay! I found the following class:")
+		message(medium,username,"Okay, I found the following class:")
 		message(medium,username, classinfo)
 		yesnomessage(medium,username,"Is this the right class?")
 		db.changeState(username,2)
@@ -32,11 +32,11 @@ def lookup(medium,username,payload):
 def seatcheck(medium,username):
 	seats = scrape(db.getTemp(username))
 	if seats > 0:
-		message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the id of another course that's closed that you'd like to track, let me know!")
+		message(medium,username,"Good news! Your class has " + str(seats) + " open seats, so you can go sign up now! If you have the ID of another course that's closed that you'd like to track, let me know!")
 		db.changeState(username,1)
 
 	elif seats > -1000:
-		message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
+		message(medium,username,"You're all set. I'll monitor your course and message you here if a seat in your class opens up.")
 		message(medium,username,"Anything else I can help you with? You can say 'commands' for a list of commands I understand.")
 		db.addJob(username,db.getTemp(username))
 		db.changeState(username,0)
@@ -88,7 +88,7 @@ def index():
 		print user
 		if len(user) == 0:
 			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up!")
-			message(medium,username,"Why don't you start by telling me the five digit id of the section you want.")
+			message(medium,username,"Why don't you start by telling me the five digit ID of the section you want.")
 			#FIX THIS WHEN FB IS APPROVED
 			db.addUser(username)
 			return "hi"
