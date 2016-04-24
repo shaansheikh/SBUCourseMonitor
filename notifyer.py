@@ -4,4 +4,10 @@ from interface import message,yesnomessage,messageFB
 
 db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
 
-print db.getJobs()
+for job in db.getJobs():
+	seats = scrape(job[2])
+	if seats > 0:
+		user = db.getUserByID(job[1])
+		info = getinfo(job[2])
+		message(user[1],user[2],"Knock, knock! You course " + info + " now has " + str(seats) + " open seats. Go sign up!")
+		print datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S') + "\t" + user[1] + "\t" + info

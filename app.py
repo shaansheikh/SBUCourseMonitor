@@ -84,6 +84,7 @@ def index():
 		if len(user) == 0:
 			message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up!")
 			message(medium,username,"Why don't you start by telling me the five digit id of the section you want.")
+			#FIX THIS WHEN FB IS APPROVED
 			db.addUser(username)
 			return "hi"
 		else:
