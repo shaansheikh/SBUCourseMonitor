@@ -19,7 +19,7 @@ def lookup(medium,username,payload):
 
 	elif classinfo == "FAIL":
 		message(medium,username,"Could not check class status :( Is Classfind down?")
-		db.reset(username)
+		
 
 	else:
 		db.addTemp(username,payload)
@@ -44,6 +44,8 @@ def seatcheck(medium,username):
 
 def statusupdatethread(medium,username):
 	updates = statusUpdate(username,db)
+	if len(updates) ==0:
+		message(medium,username,"I'm not monitoring any classes for you. Type 'add class' if you'd like me too")
 	for update in updates:
 		message(medium,username,update)
 
@@ -96,7 +98,7 @@ def index():
 					db.changeState(username,0)
 					return "Hello"
 				
-
+				db.changeState(username,4)
 				thread = threading.Thread(target=lookup,args=(medium,username,payload))
 				thread.start()
 				return "hi"
@@ -108,6 +110,7 @@ def index():
 					db.changeState(username,1)
 					return "hi"
 				elif payload == "Yes":
+					db.changeState(username,4)
 					thread = threading.Thread(target=seatcheck,args=(medium,username))
 					thread.start()
 					return "hi"
@@ -137,6 +140,7 @@ Feedback - Submit feedback or report a problem
 					db.changeState(username,1)
 					return "hi"
 				elif payload.lower().replace(" ","") == "statusupdate":
+					db.changeState(username,4)
 					thread = threading.Thread(target=statusupdatethread,args=(medium,username))
 					thread.start()
 					return "hi"
