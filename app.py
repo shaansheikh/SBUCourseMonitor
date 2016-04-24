@@ -58,23 +58,10 @@ def index():
 					db.changeState(username,0)
 					return "Hello"
 				
-				classinfo = getinfo(payload)
-				if classinfo == "ERROR":
-					message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
-					return "hi"
+				thread = threading.Thread(target=int_sleep,args=(payload,))
+				thread.start()
+				return "hi"
 
-				elif classinfo == "FAIL":
-					message(medium,username,"Could not check class status :( Is Classfind down?")
-					db.reset(username)
-					return "hi"
-
-				else:
-					db.addTemp(username,payload)
-					message(medium,username,"Okay! I found the following class:")
-					message(medium,username, classinfo)
-					yesnomessage(medium,username,"Is this the right class?")
-					db.changeState(username,2)
-					return "hi"
 		  
 			elif state == 2:
 				if payload == "Nope":
@@ -88,11 +75,14 @@ def index():
 						db.changeState(username,1)
 
 						return "hi"				
-					else:
+					elif seats == 0:
 						message(medium,username,"You're all set! I'll monitor your course and message you here if a seat in your class opens up.")
 						message(medium,username,"Anything else I can help you with? You can say 'commands' for a list of commands I understand.")
 						db.addJob(username,db.getTemp(username))
 						db.changeState(username,0)
+						return "hi"
+					else:
+						message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
 						return "hi"
 				else:
 					message(medium,username,"Pick yes or no")
@@ -146,3 +136,18 @@ if __name__ == '__main__':
 	main()
 	pass
 
+def lookup(payload):
+	classinfo = getinfo(payload)
+	if classinfo == "ERROR":
+		message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
+
+	elif classinfo == "FAIL":
+		message(medium,username,"Could not check class status :( Is Classfind down?")
+		db.reset(username)
+
+	else:
+		db.addTemp(username,payload)
+		message(medium,username,"Okay! I found the following class:")
+		message(medium,username, classinfo)
+		yesnomessage(medium,username,"Is this the right class?")
+		db.changeState(username,2)
