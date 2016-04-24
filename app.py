@@ -8,6 +8,22 @@ from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 import threading
 
+def lookup(payload):
+	classinfo = getinfo(payload)
+	if classinfo == "ERROR":
+		message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
+
+	elif classinfo == "FAIL":
+		message(medium,username,"Could not check class status :( Is Classfind down?")
+		db.reset(username)
+
+	else:
+		db.addTemp(username,payload)
+		message(medium,username,"Okay! I found the following class:")
+		message(medium,username, classinfo)
+		yesnomessage(medium,username,"Is this the right class?")
+		db.changeState(username,2)
+
 app = Flask(__name__)
 db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
 app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
@@ -137,18 +153,3 @@ if __name__ == '__main__':
 	main()
 	pass
 
-def lookup(payload):
-	classinfo = getinfo(payload)
-	if classinfo == "ERROR":
-		message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
-
-	elif classinfo == "FAIL":
-		message(medium,username,"Could not check class status :( Is Classfind down?")
-		db.reset(username)
-
-	else:
-		db.addTemp(username,payload)
-		message(medium,username,"Okay! I found the following class:")
-		message(medium,username, classinfo)
-		yesnomessage(medium,username,"Is this the right class?")
-		db.changeState(username,2)
