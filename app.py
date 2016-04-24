@@ -76,7 +76,7 @@ def index():
 					return "Hello"
 				
 
-				thread = threading.Thread(target=int_sleep,args=(medium,username,payload))
+				thread = threading.Thread(target=lookup,args=(medium,username,payload))
 
 				thread.start()
 				return "hi"
