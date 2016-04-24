@@ -8,7 +8,7 @@ from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 
 app = Flask(__name__)
-db = AuthDatabase("sbucourse.db")
+db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
 app.secret_key="A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
 
 @app.route('/', methods=['GET', 'POST'])

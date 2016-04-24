@@ -16,7 +16,7 @@ def yesnomessage(medium,username,message):
 def messageKik(username,message):
 	return requests.post(
 		'https://api.kik.com/v1/message',
-		auth=('shaanbot', 'a024ef5e-627c-4166-9fb1-2093cba4f544'),
+		auth=('sbucoursebot', '3eaa0c39-2611-4381-9a25-082341af85d0'),
 		headers={
 			'Content-Type': 'application/json'
 		},
@@ -34,7 +34,7 @@ def messageKik(username,message):
 def yesnomessageKik(username,message):
 	return requests.post(
 		'https://api.kik.com/v1/message',
-		auth=('shaanbot', 'a024ef5e-627c-4166-9fb1-2093cba4f544'),
+		auth=('sbucoursebot', '3eaa0c39-2611-4381-9a25-082341af85d0'),
 		headers={
 			'Content-Type': 'application/json'
 		},

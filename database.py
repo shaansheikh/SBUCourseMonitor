@@ -9,7 +9,7 @@ class Database(object):
         self._name = name
     
     def _execute(self, command, args=None):
-        connection = sqlite3.connect("sbucourse.db")
+        connection = sqlite3.connect("/root/SBUCourseMonitor/sbucourse.db")
         cursor = connection.cursor()
 
         if args is None:
