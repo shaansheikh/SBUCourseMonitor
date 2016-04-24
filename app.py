@@ -8,7 +8,7 @@ from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 import threading
 
-def lookup(payload):
+def lookup(medium,username,payload):
 	classinfo = getinfo(payload)
 	if classinfo == "ERROR":
 		message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
@@ -75,7 +75,7 @@ def index():
 					db.changeState(username,0)
 					return "Hello"
 				
-				thread = threading.Thread(target=int_sleep,args=(payload,))
+				thread = threading.Thread(target=int_sleep,args=(medium,username,payload))
 				thread.start()
 				return "hi"
 
