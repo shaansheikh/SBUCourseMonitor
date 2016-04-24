@@ -42,6 +42,11 @@ def seatcheck(medium,username):
 	else:
 		message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
 
+def statusupdatethread(medium,username):
+	updates = statusUpdate(username,db)
+	for update in updates:
+		message(medium,username,update)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -92,7 +97,6 @@ def index():
 				
 
 				thread = threading.Thread(target=lookup,args=(medium,username,payload))
-
 				thread.start()
 				return "hi"
 
@@ -104,7 +108,6 @@ def index():
 					return "hi"
 				elif payload == "Yes":
 					thread = threading.Thread(target=seatcheck,args=(medium,username))
-
 					thread.start()
 					return "hi"
 				else:
@@ -131,9 +134,8 @@ About - Information""")
 					db.changeState(username,1)
 					return "hi"
 				elif payload.lower().replace(" ","") == "statusupdate":
-					updates = statusUpdate(username,db)
-					for update in updates:
-						message(medium,username,update)
+					thread = threading.Thread(target=statusupdatethread,args=(medium,username))
+					thread.start()
 					return "hi"
 				elif payload.lower().replace(" ","")=="about":
 					message(medium,username,"I was created by Shaan Sheikh at a hackathon!")
