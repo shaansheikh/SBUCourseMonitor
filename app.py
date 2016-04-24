@@ -16,10 +16,11 @@ def lookup(medium,username,payload):
 	classinfo = getinfo(payload)
 	if classinfo == "ERROR":
 		message(medium,username,"Hmmm, that doesn't seem to be a valid course code. You can find the course code of your section on SOLAR. It should be a five digit number. Reply with the number when you find it.")
+		db.changeState(username,1)
 
 	elif classinfo == "FAIL":
 		message(medium,username,"Could not check class status :( Is Classfind down?")
-		
+		db.changeState(username,1)
 
 	else:
 		db.addTemp(username,payload)
@@ -41,6 +42,7 @@ def seatcheck(medium,username):
 		db.changeState(username,0)
 	else:
 		message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
+		db.changeState(username,2)
 
 def statusupdatethread(medium,username):
 	updates = statusUpdate(username,db)
@@ -48,6 +50,7 @@ def statusupdatethread(medium,username):
 		message(medium,username,"I'm not monitoring any classes for you. Type 'add class' if you'd like me too")
 	for update in updates:
 		message(medium,username,update)
+	db.changeState(username,0)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -167,6 +170,8 @@ Feedback - Submit feedback or report a problem
 					message(medium,username,"Thanks, you feedback was recorded. We'll message you here if we have any questions")
 					db.changeState(username,0)
 					return "hi"
+			elif state==4:
+				message(medium,username,"hang tight, I'm still thinking")
 			else:
 				message(medium,username,"You seem to be in an invalid state. Email shaan.sheikh@stonybrook.edu")
 
