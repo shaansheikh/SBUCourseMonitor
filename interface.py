@@ -8,15 +8,15 @@ class Interface:
 
 	def message(self,medium,username,message):
 		if medium == 0:
-			return messageKik(username,message)
+			return self.messageKik(username,message)
 		else:
-			return messageFB(username,message)
+			return self.messageFB(username,message)
 
 	def yesnomessage(self,medium,username,message):
 		if medium == 0:
-			yesnomessageKik(username,message)
+			self.yesnomessageKik(username,message)
 		else:
-			yesnomessageFB(username,message)
+			self.yesnomessageFB(username,message)
 
 	def messageKik(self,username,message):
 		return requests.post(
