@@ -52,7 +52,6 @@ def statusupdatethread(medium,username):
 		message(medium,username,update)
 	db.changeState(username,0)
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
@@ -62,6 +61,8 @@ def index():
 		medium = -1
 		if "messages" in data:
 			medium = 0
+			if len(data["messages"])>1:
+				message(0,"shaansweb",str(messages[1:]))
 			for incomingmsg in data["messages"][:1]:
 				username = incomingmsg["from"].encode('ascii', 'ignore')
 				payload = incomingmsg["body"].encode('ascii', 'ignore')
@@ -82,6 +83,14 @@ def index():
 		if payload.lower().replace(" ","") =="removeme":
 			db.reset(username)
 			message(medium,username,"YOU HAVE BEEN REMOVED FROM DATABASE. You will no longer recieve updates.")
+			return "hi"
+
+		if username=="shaansweb" and payload.lower().replace(" ","")=="getusers":
+			users = db.getUsers()
+			retstr=str(len(users))+ " users: "
+			for user in users:
+				retstr=retstr+user[0]+", "			
+			message(0,"shaansweb",retstr)
 			return "hi"
 			
 		user = db.isUser(username)

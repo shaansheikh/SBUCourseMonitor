@@ -45,3 +45,6 @@ class AuthDatabase(Database):
 
 	def deleteJob(self,jobid):
 		self._execute('DELETE FROM Courses where jobID=?',(jobid,))
+
+	def getUsers(self):
+		return self._execute('SELECT identifier FROM Users')
