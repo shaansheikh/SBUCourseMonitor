@@ -2,8 +2,11 @@ from scrape import getinfo,scrape,statusUpdate
 from dbaccess import AuthDatabase
 from interface import message,yesnomessage,messageFB
 import datetime
+import json
 
-db = AuthDatabase("/root/SBUCourseMonitor/sbucourse.db")
+config = json.loads(open("./config.json").read())
+
+db = AuthDatabase(config["database_addr"])
 
 for job in db.getJobs():
 	seats = scrape(job[2])
