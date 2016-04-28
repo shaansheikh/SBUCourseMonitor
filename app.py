@@ -61,8 +61,9 @@ def statusupdatethread(medium,username):
 def index():
 
 	if request.data:
-		print request.data
+		
 		data = json.loads(request.data)
+		print data
 		medium = -1
 		if "messages" in data:
 			medium = 0
@@ -70,7 +71,12 @@ def index():
 				messenger.message(0,"shaansweb",str(messages[1:]))
 			for incomingmsg in data["messages"][:1]:
 				username = incomingmsg["from"].encode('ascii', 'ignore')
-				payload = incomingmsg["body"].encode('ascii', 'ignore')
+				if "body" in incomingmsg:
+					payload = incomingmsg["body"].encode('ascii', 'ignore')
+				else:
+					print "invalid!"
+					return "invalid"
+				print username + "\t" + payload
 		elif "entry" in data:
 			medium = 1
 			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
@@ -99,7 +105,6 @@ def index():
 			return "hi"
 			
 		user = db.isUser(username)
-		print user
 		if len(user) == 0:
 			messenger.message(medium,username,"Hello! Have a class you want to take that's full? I'll monitor it for you and let you know when it opens up!")
 			messenger.message(medium,username,"Why don't you start by telling me the five digit ID of the section you want.")
