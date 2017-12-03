@@ -91,7 +91,7 @@ def index():
 	elif "SmsMessageSid" in data:
 		medium = 2
 		username = data["From"]
-		payload = data["Body"].lower().replace(" ","")
+		payload = data["Body"].encode('ascii', 'ignore').lower().replace(" ","")
 
 
 	else:
