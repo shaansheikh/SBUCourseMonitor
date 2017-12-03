@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 def scrape(id):
 	try:
-		r = requests.get("http://classfind.stonybrook.edu/vufind/AJAX/JSON?method=getItemVUStatuses&itemid=" + str(id) + "&strm=1168")
+		r = requests.get("http://classfind.stonybrook.edu/vufind/AJAX/JSON?method=getItemVUStatuses&itemid=" + str(id) + "&strm=1184")
 	except:
 		return -1000
 	
