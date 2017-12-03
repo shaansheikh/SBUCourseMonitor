@@ -2,7 +2,6 @@
 
 while [ true ]
 do
-    python /root/SBUCourseMonitor/notifyer.py
-    echo "notify rn"
+    python /root/SBUCourseMonitor/notifyer.py 
     sleep 300
 done
