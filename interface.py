@@ -29,8 +29,10 @@ class Interface:
 	def yesnomessage(self,medium,username,message):
 		if medium == 0:
 			self.yesnomessageKik(username,message)
-		else:
+		elif medium == 1:
 			self.yesnomessageFB(username,message)
+		else:
+			self.messageSMS(username, message + " Yes or No?")
 
 	def messageKik(self,username,message):
 		return requests.post(

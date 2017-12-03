@@ -133,11 +133,11 @@ def index():
 
 	  
 		elif state == 2:
-			if payload == "Nope":
+			if payload.lower() == "nope" or payload.lower()=="no":
 				messenger.message(medium,username,"Oops! Why don't you tell me the 5 digit ID of the class you're actually looking for. You can find the course code of your section on SOLAR.")
 				db.changeState(username,1)
 				return "hi"
-			elif payload == "Yes":
+			elif payload.lower() == "yes":
 				db.changeState(username,4)
 				thread = threading.Thread(target=seatcheck,args=(medium,username))
 				thread.start()
