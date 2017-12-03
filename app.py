@@ -43,8 +43,12 @@ def seatcheck(medium,username):
 	elif seats > -1000:
 		messenger.message(medium,username,"You're all set. I'll monitor your course and message you here if a seat in your class opens up.")
 		messenger.message(medium,username,"Anything else I can help you with? You can say 'commands' for a list of commands I understand.")
-		db.addJob(username,db.getTemp(username))
+		temp = db.getTemp(username)
+		db.addJob(username,temp)
 		db.changeState(username,0)
+
+		time.sleep(60)
+		messenger.message("Knock! Knock! Your class " + medium,getinfo(temp) + " now has 1 open seat. Go sign up!")
 	else:
 		messenger.message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
 		db.changeState(username,2)
