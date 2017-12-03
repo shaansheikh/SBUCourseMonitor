@@ -77,7 +77,7 @@ def index():
 					print "invalid!"
 					return "invalid"
 				print username + "\t" + payload
-		elif "entry" in data:
+		elif "X-Hub-Signature" in request.headers:
 			medium = 1
 			username = data["entry"][0]["messaging"][-1]["sender"]["id"]
 			if "message" in data["entry"][0]["messaging"][-1] and "text" in data["entry"][0]["messaging"][-1]["message"]:
@@ -87,6 +87,11 @@ def index():
 			else:
 				messenger.message(1,username,"(y)")
 				return "not message or postback"
+		elif "SmsMessageSid" in data:
+			medium = 2
+			username = data["From"]
+			payload = data["Body"].lower().replace(" ","")
+
 
 		else:
 			return "invalid request"
@@ -167,7 +172,7 @@ Feedback - Submit feedback or report a problem
 					thread.start()
 					return "hi"
 				elif payload.lower().replace(" ","")=="about":
-					messenger.message(medium,username,"I was created by Shaan Sheikh at a hackathon!")
+					messenger.message(medium,username,"I was created by Shaan Sheikh at a YHack 2017F!")
 					messenger.message(medium,username,"If you have any questions or want to report any problems, use the feedback command or email shaan.sheikh@stonybrook.edu")
 					return "hi"
 				elif payload.lower().replace(" ","")=="feedback":
@@ -177,7 +182,7 @@ Feedback - Submit feedback or report a problem
 					return "hi"
 				else:
 					messenger.message(medium,username,"Sorry, I don't understand what you said. Humans are hard to understand. I'm still getting the hang of it")
-					messenger.message(medium,username,'Say "commands for a list of things I can understand"')
+					messenger.message(medium,username,"Say 'commands' for a list of things I can understand")
 					return "hi"
 			elif state==3:
 				if payload.lower().replace(" ","")=="cancel":

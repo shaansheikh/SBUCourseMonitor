@@ -9,8 +9,21 @@ class Interface:
 	def message(self,medium,username,message):
 		if medium == 0:
 			return self.messageKik(username,message)
-		else:
+		elif medium == 1:
 			return self.messageFB(username,message)
+		elif medium == 2:
+			self.messageSMS(username,message)
+
+	def messageSMS(self,username,message):
+		account_sid = self.config["twilio_sid"]
+		auth_token = self.config["twilio_auth_token"]
+
+		client = Client(account_sid, auth_token)
+
+		message = client.messages.create(
+		    to=username, 
+		    from_="+16314961738",
+		    body=message)
 
 	def yesnomessage(self,medium,username,message):
 		if medium == 0:
@@ -71,8 +84,9 @@ class Interface:
 
 
 	def messageFB(self,userid,message):
+
 		headers = {'Content-Type': 'application/json',}
-		data = '{"recipient":{"id":'+str(userid)+'},"message":{"text":"'+message+'"}}'
+		data = '{"recipient":{"id":'+str(userid)+'},"message":{"text":"'+message+'"},"quick_replies":[{"content_type":"text","title":"<BUTTON_TEXT>","payload":"<STRING_SENT_TO_WEBHOOK>"}]}'
 		return requests.post('https://graph.facebook.com/v2.6/me/messages?access_token='+self.config["fb_token"], headers=headers, data=data)
 
 	def yesnomessageFB(self,userid,message):
