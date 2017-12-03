@@ -30,3 +30,5 @@ def getinfo(id):
 
 def statusUpdate(username,database):
 	return [getinfo(str(x[0])) + " - " + str(scrape(x[0])) + " seats open" for x in database.getFollowingCourses(username)]
+
+print "hi"
