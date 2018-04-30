@@ -46,9 +46,6 @@ def seatcheck(medium,username):
 		temp = db.getTemp(username)
 		db.addJob(username,temp)
 		db.changeState(username,0)
-
-		time.sleep(60)
-		messenger.message("Knock! Knock! Your class " + medium,getinfo(temp) + " now has 1 open seat. Go sign up!")
 	else:
 		messenger.message(medium,username,"Couldn't figure out how many seats open. Is classfind down?")
 		db.changeState(username,2)
