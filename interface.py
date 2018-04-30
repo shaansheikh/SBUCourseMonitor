@@ -1,6 +1,7 @@
 import requests
 import json
 from twilio.rest import Client
+import json
 
 class Interface:
 
@@ -97,3 +98,10 @@ class Interface:
 
 		data = '{ "recipient":{ "id":'+str(userid)+'},"message":{ "attachment":{ "type":"template","payload":{ "template_type":"button","text":"'+message+'","buttons":[ { "type":"postback","title":"Yes","payload":"Yes" },{ "type":"postback","title":"Nope","payload":"Nope"}]}}}}'
 		requests.post('https://graph.facebook.com/me/messages?access_token='+self.config["fb_token"],headers=headers,data=data)
+
+
+config = json.loads(open("./config.json").read())
+i = Interface(config)
+numbers = ["+12037878856","+19147150900","+13476742261"]
+message = "Hello. If you're recieing this message, you were monitoring a class for the Spring 2018 semester. The bot is now being updated to monitor classes for the Fall 2018 semester and your job has been deleted. Please message the bot again if you are interested in monitoring classes for next semester."
+[i.messageSMS(number,message) for number in numbers]

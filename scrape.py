@@ -20,7 +20,7 @@ def getinfo(id):
 		b=ET.fromstring(a.text).findall(".//channel//item//title")
 	except:
 		return "FAIL"
-	if (len(b)!=1):
+	if (len(b)==0):
 		return "ERROR"
 	course = b[0].text
 	prof=ET.fromstring(a.text).findall(".//channel//item//author")[0].text
@@ -31,4 +31,4 @@ def getinfo(id):
 def statusUpdate(username,database):
 	return [getinfo(str(x[0])) + " - " + str(scrape(x[0])) + " seats open" for x in database.getFollowingCourses(username)]
 
-print scrape(89752)
+print getinfo("89752")
