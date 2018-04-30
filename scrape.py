@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 def scrape(id):
 	try:
-		r = requests.get("http://classfind.stonybrook.edu/vufind/AJAX/JSON?method=getItemVUStatuses&itemid=" + str(id) + "&strm=1184")
+		r = requests.get("http://classfind.stonybrook.edu/vufind/AJAX/JSON?method=getItemVUStatuses&itemid=" + str(id) + "&strm=1188")
 	except:
 		return -1000
 	
@@ -31,4 +31,4 @@ def getinfo(id):
 def statusUpdate(username,database):
 	return [getinfo(str(x[0])) + " - " + str(scrape(x[0])) + " seats open" for x in database.getFollowingCourses(username)]
 
-print "hi"
+print scrape(89752)
